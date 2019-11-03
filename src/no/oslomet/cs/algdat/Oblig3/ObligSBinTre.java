@@ -96,8 +96,11 @@ public class ObligSBinTre<T> implements Beholder<T>
   @Override
   public boolean fjern(T verdi) ////////////// Opg 5
   {
+    int counter = 0;
 
-    if (verdi == null) return false;  // treet har ingen nullverdier
+    if (verdi == null) {
+      return 0;
+    }
 
     Node<T> p = rot, q = null;   // q skal være forelder til p
 
@@ -108,10 +111,12 @@ public class ObligSBinTre<T> implements Beholder<T>
       else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
       else break;    // den søkte verdien ligger i p
     }
-    if (p == null) return false;   // finner ikke verdi
+    if (p == null) return counter;   // finner ikke verdi
 
     if (p.venstre == null && p.høyre == null){
-      if (q < p){
+      int cmp = comp.compare(verdi,p.verdi);
+      int cmp2 = comp.compare(verdi,q.verdi);
+      if (cmp2 < cmp){
         q.høyre = null;
       }
       else q.venstre = null;
@@ -122,9 +127,9 @@ public class ObligSBinTre<T> implements Beholder<T>
     if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
     {
       Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-      if (p == rot) rot = b; b.forelder = null;
-      else if (p == q.venstre) q.venstre = b; b.forelder = q;
-      else q.høyre = b; b.forelder = q;
+      if (p == rot) {rot = b; b.forelder = null;}
+      else if (p == q.venstre) {q.venstre = b; b.forelder = q;}
+      else {q.høyre = b; b.forelder = q;}
     }
     else  // Tilfelle 3)
     {
@@ -132,18 +137,20 @@ public class ObligSBinTre<T> implements Beholder<T>
       while (r.venstre != null)
       {
         s = r;    // s er forelder til r
+
         r = r.venstre;
       }
 
       p.verdi = r.verdi;   // kopierer verdien i r til p
 
-      if (s != p) s.venstre = r.høyre; r.forelder = null;
-      else s.høyre = r.høyre; r.forelder = null;
+      if (s != p) {s.venstre = r.høyre; r.forelder = null;}
+      else {s.høyre = r.høyre; r.forelder = null;}
     }
 
     antall--;   // det er nå én node mindre i treet
-    return true;
-
+    counter++;
+    fjernAlle(verdi);
+    return counter;
   }
   
   public int fjernAlle(T verdi) /////////////// Opg 5
@@ -166,7 +173,9 @@ public class ObligSBinTre<T> implements Beholder<T>
     if (p == null) return counter;   // finner ikke verdi
 
     if (p.venstre == null && p.høyre == null){
-      if (q < p){
+      int cmp = comp.compare(verdi,p.verdi);
+      int cmp2 = comp.compare(verdi,q.verdi);
+      if (cmp2 < cmp){
         q.høyre = null;
       }
       else q.venstre = null;
@@ -177,9 +186,9 @@ public class ObligSBinTre<T> implements Beholder<T>
     if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
     {
       Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-      if (p == rot) rot = b; b.forelder = null;
-      else if (p == q.venstre) q.venstre = b; b.forelder = q;
-      else q.høyre = b; b.forelder = q;
+      if (p == rot) {rot = b; b.forelder = null;}
+      else if (p == q.venstre) {q.venstre = b; b.forelder = q;}
+      else {q.høyre = b; b.forelder = q;}
     }
     else  // Tilfelle 3)
     {
@@ -193,13 +202,14 @@ public class ObligSBinTre<T> implements Beholder<T>
 
       p.verdi = r.verdi;   // kopierer verdien i r til p
 
-      if (s != p) s.venstre = r.høyre; r.forelder = null;
-      else s.høyre = r.høyre; r.forelder = null;
+      if (s != p) {s.venstre = r.høyre; r.forelder = null;}
+      else {s.høyre = r.høyre; r.forelder = null;}
     }
 
     antall--;   // det er nå én node mindre i treet
     counter++;
     fjernAlle(verdi);
+    return counter;
   }
   
   @Override
@@ -243,7 +253,7 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     while ( rot != null) {
       p = rot; q= null;
-      while (p.høyre =! null || p.venstre != null) {
+      while (p.høyre != null || p.venstre != null) {
         if(p.høyre != null && p.venstre != null){
           p = p.venstre;
         }
