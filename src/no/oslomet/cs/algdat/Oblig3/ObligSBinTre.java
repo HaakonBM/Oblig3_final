@@ -24,6 +24,12 @@ public class ObligSBinTre<T> implements Beholder<T>
     {
       this(verdi, null, null, forelder);
     }
+    private Node (T verdi) {
+        this.verdi = verdi;
+        this.forelder = null;
+        this.høyre = null;
+        this.venstre = null;
+    }
 
     @Override
     public String toString(){ return "" + verdi;}
@@ -46,7 +52,6 @@ public class ObligSBinTre<T> implements Beholder<T>
   @Override
   public boolean leggInn(T verdi)  {
 
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
   Node<T> p = rot;
   Node<T> q = null;
 
@@ -57,7 +62,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     p = cmp < 0 ? p.venstre : p.høyre;
   }
 
-  p= new Node<> (verdi);
+  p = new Node<T> (verdi);
   if (q==null)
     rot=p;
   else if (cmp < 0)
