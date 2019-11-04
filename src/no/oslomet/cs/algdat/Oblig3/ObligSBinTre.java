@@ -96,10 +96,8 @@ public class ObligSBinTre<T> implements Beholder<T>
   @Override
   public boolean fjern(T verdi) ////////////// Opg 5
   {
-    int counter = 0;
-
     if (verdi == null) {
-      return 0;
+      return false;
     }
 
     Node<T> p = rot, q = null;   // q skal være forelder til p
@@ -111,7 +109,7 @@ public class ObligSBinTre<T> implements Beholder<T>
       else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
       else break;    // den søkte verdien ligger i p
     }
-    if (p == null) return counter;   // finner ikke verdi
+    if (p == null) return false;   // finner ikke verdi
 
     if (p.venstre == null && p.høyre == null){
       int cmp = comp.compare(verdi,p.verdi);
@@ -148,9 +146,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     }
 
     antall--;   // det er nå én node mindre i treet
-    counter++;
-    fjernAlle(verdi);
-    return counter;
+    return true;
   }
   
   public int fjernAlle(T verdi) /////////////// Opg 5
@@ -297,9 +293,53 @@ public class ObligSBinTre<T> implements Beholder<T>
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
-  public String[] grener()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  public String[] grener() {
+
+    if(tom())return new String[0];
+
+    String[] tabell = new String[1];
+
+    StringJoiner a;
+    ArrayDeque<Node<T>> b = new ArrayDeque();
+    ArrayDeque<Node<T>> c = new ArrayDeque();
+
+    boolean listeEmpty = false;
+
+    Node<T> p = rot;
+
+    int i = 0;
+
+    while(!listeEmpty){
+      a = new StringJoiner(", ","[","]");
+
+      while( p.venstre!=null || p.høyre!=null) {
+
+        if( p.venstre!=null ) {
+
+          if( p.høyre!=null ) b.add(p.høyre);
+
+          p = p.venstre;
+
+        }else if(p.høyre!=null){
+
+          p = p.høyre;
+        }
+      }
+
+      while(p!=null) {c.add(p);p=p.forelder;}
+
+      while(!c.isEmpty())
+        a.add(c.pollLast().toString());
+
+      if(tabell[tabell.length-1]!=null)
+        tabell = Arrays.copyOf(tabell, tabell.length+1);
+      tabell[i++] = a.toString();
+
+      if(!b.isEmpty()) p = b.pollLast();
+
+      else listeEmpty = true;
+    }
+    return tabell;
   }
   
   public String bladnodeverdier()
