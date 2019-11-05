@@ -297,7 +297,20 @@ public class ObligSBinTre<T> implements Beholder<T>
   @Override
   public String toString()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      StringBuilder s = new StringBuilder();
+      s.append('[');
+      Node p = rot;
+      if(p!=null){
+          while(p.venstre != null)
+              p= minVerdi(p);
+          s.append(p);
+          while(nesteInorden(p)!=null){
+              p = nesteInorden(p);
+              s.append(",").append(" ").append(p);
+          }
+      }
+      s.append(']');
+      return s.toString();
   }
   
   public String omvendtString()
