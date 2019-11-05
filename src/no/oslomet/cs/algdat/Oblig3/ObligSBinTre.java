@@ -90,14 +90,16 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     return false;
   }
-  
+
   @Override
   public boolean fjern(T verdi) ////////////// Opg 5
   {
+
+    
     int counter = 0;
 
     if (verdi == null) {
-      return 0;
+      return false;
     }
 
     Node<T> p = rot, q = null;   // q skal være forelder til p
@@ -109,7 +111,7 @@ public class ObligSBinTre<T> implements Beholder<T>
       else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
       else break;    // den søkte verdien ligger i p
     }
-    if (p == null) return counter;   // finner ikke verdi
+    if (p == null) return false;   // finner ikke verdi
 
     if (p.venstre == null && p.høyre == null){
       int cmp = comp.compare(verdi,p.verdi);
@@ -148,7 +150,9 @@ public class ObligSBinTre<T> implements Beholder<T>
     antall--;   // det er nå én node mindre i treet
     counter++;
     fjernAlle(verdi);
-    return counter;
+    return true;
+
+
   }
   
   public int fjernAlle(T verdi) /////////////// Opg 5
@@ -209,7 +213,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     fjernAlle(verdi);
     return counter;
   }
-  
+
   @Override
   public int antall()
   {
@@ -315,7 +319,27 @@ public class ObligSBinTre<T> implements Beholder<T>
   
   public String omvendtString()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    StringBuilder s = new StringBuilder();
+    TabellStakk tStack = new TabellStakk();
+    s.append('[');
+
+    Node p = minVerdi(rot);
+    if(p != null){
+        tStack.leggInn (p);
+        while (nesteInorden(p) != null) {
+        p = nesteInorden(p);
+        tStack.leggInn (p);
+      }
+    }
+
+    while ( !tStack.tom() )
+    {
+      s.append( tStack.taUt() );
+      if(!tStack.tom())
+        s.append(",").append(" ");
+    }
+    s.append(']');
+    return s.toString();
   }
   
   public String høyreGren()
