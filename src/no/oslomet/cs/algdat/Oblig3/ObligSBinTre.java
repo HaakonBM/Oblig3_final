@@ -341,16 +341,58 @@ public class ObligSBinTre<T> implements Beholder<T>
     s.append(']');
     return s.toString();
   }
-  
+
   public String høyreGren()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    StringJoiner s = new StringJoiner(", ", "[", "]");
+
+    if (!tom()) {
+      Node<T> p = rot;
+
+      while (true)
+      {
+        s.add(p.verdi.toString());
+        if (p.høyre != null) {
+          p = p.høyre;
+        }
+
+        else if (p.venstre != null) {
+          p = p.venstre;
+        }
+        else break;
+      }
+    }
+    return s.toString();
   }
-  
+
   public String lengstGren()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (tom()) return "[]";
+
+    Kø<Node<T>> a = new TabellKø<>();
+    a.leggInn(rot);
+
+    Node<T> p = null;
+
+    while (!a.tom())
+    {
+      p = a.taUt();
+      if (p.høyre != null) {
+        a.leggInn(p.høyre);
+      }
+      if (p.venstre != null) {
+        a.leggInn(p.venstre);
+      }
+    }
+    Stakk<T> s = new TabellStakk<>();
+    while (p != null)
+    {
+      s.leggInn(p.verdi);
+      p = p.forelder;
+    }
+    return s.toString();
   }
+
   
   public String[] grener()
   {
