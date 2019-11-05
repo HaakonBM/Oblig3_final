@@ -45,10 +45,8 @@ public class ObligSBinTre<T> implements Beholder<T>
   
   @Override
   public boolean leggInn(T verdi)  {
-
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  Node<T> p = rot;
-  Node<T> q = null;
+    Node<T> p = rot;
+    Node<T> q = null;
 
   int cmp= 0;
   while (p!=null){
@@ -57,7 +55,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     p = cmp < 0 ? p.venstre : p.høyre;
   }
 
-  p= new Node<> (verdi);
+  p= new Node<> (verdi, null);
   if (q==null)
     rot=p;
   else if (cmp < 0)
@@ -270,10 +268,30 @@ public class ObligSBinTre<T> implements Beholder<T>
       p.verdi = null;
     }
   }
+
+  // Hvis p.høyre ikke er null, finn den minste indeks nederst til venstre side av treet.
+  private static<T> Node<T> minVerdi(Node<T> p){
+    if (p == null)
+      return null;
+    if (p.venstre != null)
+      return minVerdi(p.venstre);
+    return p;
+  }
   
-  private static <T> Node<T> nesteInorden(Node<T> p)
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  private static <T> Node<T> nesteInorden(Node<T> p) {
+    if (p == null)
+      return null;
+    // hvis p.høyre ikke er null
+    if (p.høyre != null)
+      return minVerdi(p.høyre);
+    // else hvis p.høyre er null
+    Node n = p.forelder;
+    Node curr= p;
+    while (n != null && curr == n.høyre) {
+      curr= n;
+      n = n.forelder;
+    }
+    return n;
   }
   
   @Override
