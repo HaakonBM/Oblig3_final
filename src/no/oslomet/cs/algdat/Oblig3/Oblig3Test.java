@@ -16,6 +16,10 @@ Oblig 3 sendes inn!
 
 ///// Oppdatert 8. oktober 2019 ///////////////
 
+//Haakon Molvig s306458
+//Zeray Tewelde Kahsay s327667
+//Morten Sydow Mo s331406
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -703,7 +707,7 @@ public class Oblig3Test {
 
         tre.leggInn(10);
         i = tre.iterator();
-
+        System.out.println("c");
         if (i.next().compareTo(10) != 0) {
             antallFeil++;
             System.out.println("Oppgave 9c: Her skal next() returnere 10!");
@@ -721,7 +725,7 @@ public class Oblig3Test {
                         ("Oppgave 9e: Skal kaste NoSuchElementException her!");
             }
         }
-
+        System.out.println("e");
         tre.nullstill();
 
         int[] a = {5, 2, 8, 1, 4, 6, 9, 3, 7};
@@ -739,7 +743,7 @@ public class Oblig3Test {
                     ("            Din iterator skal kun gå gjennom bladnodene!");
 
         }
-
+        System.out.println("e");
         tre.nullstill();
         tre.leggInn(1);
         tre.leggInn(2);
@@ -752,7 +756,7 @@ public class Oblig3Test {
             System.out.println
                     ("Oppgave 9g: Treet har kun 4 som bladnodeverdi!");
         }
-
+        System.out.println("g");
         tre.nullstill();
         tre.leggInn(1);
         i = tre.iterator();
