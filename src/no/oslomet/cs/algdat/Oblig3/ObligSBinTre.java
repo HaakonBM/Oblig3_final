@@ -328,7 +328,7 @@ public class ObligSBinTre<T> implements Beholder<T>
       }
     }
     return s.toString();
-  }
+  }//slutt høyerGren
 
   public String lengstGren()
   {
@@ -356,7 +356,7 @@ public class ObligSBinTre<T> implements Beholder<T>
       p = p.forelder;
     }
     return s.toString();
-  }
+  }//slutt lengstGren
 
 
     // Testen for oppgaven står og kjører og kjører, hvis jeg setter en break der jeg har kommentert den bort får jeg en feil i oppgave 7d, så jeg tror feilen skjer i deloppgave 7e
@@ -366,7 +366,7 @@ public class ObligSBinTre<T> implements Beholder<T>
           return new String[0];
       }
       int i =0;
-      String[] stringTabell = new String[1];
+      String[] tabell = new String[1];
       StringJoiner s;
       ArrayDeque<Node<T>> a = new ArrayDeque();
       ArrayDeque<Node<T>> b = new ArrayDeque();
@@ -396,16 +396,16 @@ public class ObligSBinTre<T> implements Beholder<T>
               s.add(b.pollLast().toString());
           }
 
-          if(stringTabell[stringTabell.length-1]!=null)
-              stringTabell = Arrays.copyOf(stringTabell, stringTabell.length+1);
-          stringTabell[i++] = s.toString();
+          if(tabell[tabell.length-1]!=null)
+              tabell = Arrays.copyOf(tabell, tabell.length+1);
+          tabell[i++] = s.toString();
 
           if(!a.isEmpty()) p = a.pollLast();
           else listeEmpty = true;
       }
 
-      return stringTabell;
-  }
+      return tabell;
+  }// slutt grener
   
   public String bladnodeverdier()
   {
