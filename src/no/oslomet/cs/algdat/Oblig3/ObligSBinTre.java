@@ -360,8 +360,52 @@ public class ObligSBinTre<T> implements Beholder<T>
 
   
   public String[] grener()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  {if(tom())return new String[0];
+
+    String[] tabell = new String[1];
+
+    StringJoiner a;
+
+    ArrayDeque<Node<T>> b = new ArrayDeque();
+    ArrayDeque<Node<T>> c = new ArrayDeque();
+
+    boolean listeEmpty = false;
+
+    Node<T> p = rot;
+
+    int i = 0;
+
+    while(!listeEmpty){
+      a = new StringJoiner(", ","[","]");
+
+      while( p.venstre!=null || p.høyre!=null) {
+
+        if( p.venstre!=null ) {
+
+          if( p.høyre!=null ) b.add(p.høyre);
+
+          p = p.venstre;
+
+        }else if(p.høyre!=null){
+
+          p = p.høyre;
+        }
+      }
+
+      while(p!=null) {c.add(p);p=p.forelder;}
+
+      while(!c.isEmpty())
+        a.add(c.pollLast().toString());
+
+      if(tabell[tabell.length-1]!=null)
+        tabell = Arrays.copyOf(tabell, tabell.length+1);
+      tabell[i++] = a.toString();
+
+      if(!b.isEmpty()) p = b.pollLast();
+
+      else listeEmpty = true;
+    }
+    return tabell;
   }
   
   public String bladnodeverdier()
