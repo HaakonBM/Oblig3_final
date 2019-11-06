@@ -42,7 +42,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     antall = 0;
     comp = c;
   }
-  
+
   @Override
   public boolean leggInn(T verdi)  {
     Node<T> p = rot;
@@ -72,7 +72,7 @@ public class ObligSBinTre<T> implements Beholder<T>
   return true;
 
   }
-  
+
   @Override
   public boolean inneholder(T verdi)
   {
@@ -90,126 +90,95 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     return false;
   }
-  
+
   @Override
   public boolean fjern(T verdi) ////////////// Opg 5
   {
-    int counter = 0;
-
-    if (verdi == null) {
-      return 0;
-    }
-
-    Node<T> p = rot, q = null;   // q skal være forelder til p
-
-    while (p != null)            // leter etter verdi
-    {
-      int cmp = comp.compare(verdi,p.verdi);      // sammenligner
-      if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
-      else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
-      else break;    // den søkte verdien ligger i p
-    }
-    if (p == null) return counter;   // finner ikke verdi
-
-    if (p.venstre == null && p.høyre == null){
-      int cmp = comp.compare(verdi,p.verdi);
-      int cmp2 = comp.compare(verdi,q.verdi);
-      if (cmp2 < cmp){
-        q.høyre = null;
-      }
-      else q.venstre = null;
-
-      p.forelder = null;
-    }
-
-    if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
-    {
-      Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-      if (p == rot) {rot = b; b.forelder = null;}
-      else if (p == q.venstre) {q.venstre = b; b.forelder = q;}
-      else {q.høyre = b; b.forelder = q;}
-    }
-    else  // Tilfelle 3)
-    {
-      Node<T> s = p, r = p.høyre;   // finner neste i inorden
-      while (r.venstre != null)
-      {
-        s = r;    // s er forelder til r
-
-        r = r.venstre;
+      if (verdi == null) {
+          return false;
       }
 
-      p.verdi = r.verdi;   // kopierer verdien i r til p
+      Node<T> p = rot;
 
-      if (s != p) {s.venstre = r.høyre; r.forelder = null;}
-      else {s.høyre = r.høyre; r.forelder = null;}
-    }
+      while (p != null) {
+          int compare = comp.compare(verdi, p.verdi); {
+              if (compare < 0) {
+                  p = p.venstre;
+              } else if (compare > 0) {
+                  p = p.høyre;
+              } else {
+                  break;
+              }
+          }
+      }
+      if (p==null) {
+          return false;
+      }
 
-    antall--;   // det er nå én node mindre i treet
-    counter++;
-    fjernAlle(verdi);
-    return counter;
+      Node<T> b = rot;
+      if (p.høyre == null || p.venstre == null) {
+          if (p.venstre != null) {
+              b = p.venstre;
+          } else {
+              b = p.høyre;
+          }
+
+          if (p == rot) {
+              rot = b;
+              if (b != null) {
+                  b.forelder = null;
+              }
+          } else if (p == p.forelder.venstre) {
+              if (b!= null) {
+                  b.forelder = p.forelder;
+                  p.forelder.venstre = b;
+              }
+          } else {
+              if (b != null) {
+                  b.forelder = p.forelder;
+              }
+              p.forelder.høyre = b;
+          }
+      } else {
+
+          Node<T> r = p.høyre;
+          while (r.venstre != null) {
+              r = r.venstre;
+          }
+          p.verdi = r.verdi;
+
+          if (r.forelder != p) {
+              Node<T> q = r.forelder;
+              q.venstre = r.høyre;
+              if (q.venstre != null) {
+                  q.venstre.forelder = q;
+              }
+          } else {
+              p.høyre = r.høyre;
+              if (p.høyre != null) {
+                  p.høyre.forelder = p;
+              }
+          }
+      }
+
+      antall--;
+      return true;
+
   }
-  
+
   public int fjernAlle(T verdi) /////////////// Opg 5
   {
-    int counter = 0;
-
-    if (verdi == null) {
-      return 0;
-    }
-
-    Node<T> p = rot, q = null;   // q skal være forelder til p
-
-    while (p != null)            // leter etter verdi
-    {
-      int cmp = comp.compare(verdi,p.verdi);      // sammenligner
-      if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
-      else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
-      else break;    // den søkte verdien ligger i p
-    }
-    if (p == null) return counter;   // finner ikke verdi
-
-    if (p.venstre == null && p.høyre == null){
-      int cmp = comp.compare(verdi,p.verdi);
-      int cmp2 = comp.compare(verdi,q.verdi);
-      if (cmp2 < cmp){
-        q.høyre = null;
+      int i = 0;
+      boolean fjernet = true;
+      while(fjernet!=false){
+          if(fjern(verdi))
+              i++;
+          else
+              fjernet = false;
       }
-      else q.venstre = null;
-
-      p.forelder = null;
-    }
-
-    if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
-    {
-      Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-      if (p == rot) {rot = b; b.forelder = null;}
-      else if (p == q.venstre) {q.venstre = b; b.forelder = q;}
-      else {q.høyre = b; b.forelder = q;}
-    }
-    else  // Tilfelle 3)
-    {
-      Node<T> s = p, r = p.høyre;   // finner neste i inorden
-      while (r.venstre != null)
-      {
-        s = r;    // s er forelder til r
-
-        r = r.venstre;
-      }
-
-      p.verdi = r.verdi;   // kopierer verdien i r til p
-
-      if (s != p) {s.venstre = r.høyre; r.forelder = null;}
-      else {s.høyre = r.høyre; r.forelder = null;}
-    }
-
-    antall--;   // det er nå én node mindre i treet
-    counter++;
-    fjernAlle(verdi);
-    return counter;
+      return i;
   }
-  
+
   @Override
   public int antall()
   {
@@ -315,22 +284,128 @@ public class ObligSBinTre<T> implements Beholder<T>
   
   public String omvendtString()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    StringBuilder s = new StringBuilder();
+    TabellStakk tStack = new TabellStakk();
+    s.append('[');
+
+    Node p = minVerdi(rot);
+    if(p != null){
+        tStack.leggInn (p);
+        while (nesteInorden(p) != null) {
+        p = nesteInorden(p);
+        tStack.leggInn (p);
+      }
+    }
+
+    while ( !tStack.tom() )
+    {
+      s.append( tStack.taUt() );
+      if(!tStack.tom())
+        s.append(",").append(" ");
+    }
+    s.append(']');
+    return s.toString();
   }
-  
+
   public String høyreGren()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    StringJoiner s = new StringJoiner(", ", "[", "]");
+
+    if (!tom()) {
+      Node<T> p = rot;
+
+      while (true)
+      {
+        s.add(p.verdi.toString());
+        if (p.høyre != null) {
+          p = p.høyre;
+        }
+
+        else if (p.venstre != null) {
+          p = p.venstre;
+        }
+        else break;
+      }
+    }
+    return s.toString();
   }
-  
+
   public String lengstGren()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (tom()) return "[]";
+
+    Kø<Node<T>> a = new TabellKø<>();
+    a.leggInn(rot);
+
+    Node<T> p = null;
+
+    while (!a.tom())
+    {
+      p = a.taUt();
+      if (p.høyre != null) {
+        a.leggInn(p.høyre);
+      }
+      if (p.venstre != null) {
+        a.leggInn(p.venstre);
+      }
+    }
+    Stakk<T> s = new TabellStakk<>();
+    while (p != null)
+    {
+      s.leggInn(p.verdi);
+      p = p.forelder;
+    }
+    return s.toString();
   }
+
   
   public String[] grener()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  {if(tom())return new String[0];
+
+    String[] tabell = new String[1];
+
+    StringJoiner a;
+
+    ArrayDeque<Node<T>> b = new ArrayDeque();
+    ArrayDeque<Node<T>> c = new ArrayDeque();
+
+    boolean listeEmpty = false;
+
+    Node<T> p = rot;
+
+    int i = 0;
+
+    while(!listeEmpty){
+      a = new StringJoiner(", ","[","]");
+
+      while( p.venstre!=null || p.høyre!=null) {
+
+        if( p.venstre!=null ) {
+
+          if( p.høyre!=null ) b.add(p.høyre);
+
+          p = p.venstre;
+
+        }else if(p.høyre!=null){
+
+          p = p.høyre;
+        }
+      }
+
+      while(p!=null) {c.add(p);p=p.forelder;}
+
+      while(!c.isEmpty())
+        a.add(c.pollLast().toString());
+
+      if(tabell[tabell.length-1]!=null)
+        tabell = Arrays.copyOf(tabell, tabell.length+1);
+      tabell[i++] = a.toString();
+
+      if(!b.isEmpty()) p = b.pollLast();
+
+      else listeEmpty = true;
+    }
+    return tabell;
   }
   
   public String bladnodeverdier()
