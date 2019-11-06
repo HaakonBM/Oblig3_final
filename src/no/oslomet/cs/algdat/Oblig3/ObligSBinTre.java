@@ -358,7 +358,8 @@ public class ObligSBinTre<T> implements Beholder<T>
     return s.toString();
   }
 
-  
+
+    // Testen for oppgaven står og kjører og kjører, hvis jeg setter en break der jeg har kommentert den bort får jeg en feil i oppgave 7d, så jeg tror feilen skjer i deloppgave 7e
   public String[] grener()
   {
       if(tom()){
@@ -391,7 +392,6 @@ public class ObligSBinTre<T> implements Beholder<T>
               b.add(p);
               p = p.forelder;
           }
-
           while(!b.isEmpty()){
               s.add(b.pollLast().toString());
           }
