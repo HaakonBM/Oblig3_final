@@ -1,15 +1,5 @@
 # Obligatorisk oppgave 3 i Algoritmer og Datastrukturer
 
-Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. 
-Oppgaven er levert av følgende studenter:
-* Navn Navnesen, S981737, s981737@oslomet.no
-* ...
-
-# Arbeidsfordeling
-
-I oppgaven har vi hatt følgende arbeidsfordeling:
-* Per har hatt hovedansvar for oppgave 1, 3, og 5. 
-* Else har hatt hovedansvar for oppgave 2, 4, og 6. 
-* Fatima har hatt hovedansvar for oppgave 7 og 8. 
-* Vi har i fellesskap løst oppgave 10. 
-
+Studenter: \
+1,2,3 Zeray 4,5 Haakon 6,7,8 Morten 8,9 
+Haakon Molvig s306458 Zeray Tewelde Kahsay s327667 Morten Sydow Mo s331406
