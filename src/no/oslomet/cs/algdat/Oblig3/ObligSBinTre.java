@@ -431,10 +431,51 @@ public class ObligSBinTre<T> implements Beholder<T>
     finnBladnode(p.venstre, sb);
     finnBladnode(p.høyre, sb);
   }// slutt finnBladnode
+
+    // hjlpemetoden
+    private static <T> Node<T> førsteBladnode(Node<T> p)
+    {
+        while (true)
+        {
+            if (p.venstre != null) p = p.venstre;
+            else if (p.høyre != null) p = p.høyre;
+            else return p;
+        }
+    }
+
+    // hjelpemetoden
+    private static <T> Node<T> nesteBladnode(Node<T> p)
+    {
+        Node<T> f = p.forelder;
+        while (f != null && (p == f.høyre || f.høyre == null))
+        {
+            p = f; f = f.forelder;
+        }
+
+        return f == null ? null : førsteBladnode(f.høyre);
+    }
   
-  public String postString()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  public String postString() {
+
+      if (tom()) return "[]";
+
+      StringJoiner sj = new StringJoiner(", ", "[", "]");
+
+      Node<T> p = førsteBladnode(rot);
+
+      while (true)
+      {
+          sj.add(p.verdi.toString());
+
+          if (p.forelder == null) break;
+
+          Node<T> f = p.forelder;
+
+          if (p == f.høyre || f.høyre == null) p = f;
+          else p = førsteBladnode(f.høyre);
+      }
+
+      return sj.toString();
   }
   
   @Override
@@ -448,32 +489,61 @@ public class ObligSBinTre<T> implements Beholder<T>
     private Node<T> p = rot, q = null;
     private boolean removeOK = false;
     private int iteratorendringer = endringer;
-    
-    private BladnodeIterator()  // konstruktør
-    {
 
+    // konstruktør
+    private BladnodeIterator()  {
+        if (tom()) return;
+        // ved bruk av en hjelpemetode
+        p = førsteBladnode(rot);
+        q = null;
+        removeOK = false;
+        iteratorendringer = endringer;
     }
    
 
 
     @Override
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
 
       return p != null;  // Denne skal ikke endres!
     }
+
     
     @Override
-    public T next()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public T next() {
+        if (!hasNext()) throw new NoSuchElementException("Ikke flere bladnodeverdier!");
+
+        if (endringer != iteratorendringer) throw new
+                ConcurrentModificationException("Treet har blitt endret!");
+
+        removeOK = true;
+        // ved bruke av en hjelpemetode
+        q = p; p = nesteBladnode(p);
+
+        return q.verdi;
+
     }
     
     @Override
-    public void remove()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+    public void remove() {
+        if (!removeOK) throw
+                new IllegalStateException("Ulovlig kall på remove()!");
+
+        if (endringer != iteratorendringer) throw new
+                ConcurrentModificationException("Treet har blitt endret!");
+
+        removeOK = false;
+
+        Node<T> f = q.forelder;
+
+        if (f == null) rot = null;
+        else if (q == f.venstre) f.venstre = null;
+        else f.høyre = null;
+
+        antall--;
+        endringer++;
+        iteratorendringer++;
+    }// slutt remove
 
   } // BladnodeIterator
 
