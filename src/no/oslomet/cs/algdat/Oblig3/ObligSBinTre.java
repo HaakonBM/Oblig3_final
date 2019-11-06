@@ -359,43 +359,52 @@ public class ObligSBinTre<T> implements Beholder<T>
   }
 
   
-  public String[] grener()// bruker 2 hjelpemetoder grener(node<T>, Liste<String>) og enGren(Node<T>)
+  public String[] grener()
   {
-      if (tom()) return new String[0];
-
-      Liste<String> liste = new TabellListe<>();
-
-      if (!tom()) {
-          grener(rot, liste);
+      if(tom()){
+          return new String[0];
       }
-      String[] a = new String[liste.antall()];
-      int i = 0; for (String gren : liste) a[i++] = gren;
+      int i =0;
+      String[] stringTabell = new String[1];
+      StringJoiner s;
+      ArrayDeque<Node<T>> a = new ArrayDeque();
+      ArrayDeque<Node<T>> b = new ArrayDeque();
 
-      return a;
-  }
+      boolean listeEmpty = false;
 
-  private static <T> void grener(Node<T> p, Liste<String> liste)//hjelpemetode
-  {
-        if (p.venstre == null && p.høyre == null) {
-            liste.leggInn(enGren(p));
-        }
-        if (p.venstre != null) {
-            grener(p.venstre, liste);
-        }
-        if (p.høyre != null) {
-            grener(p.høyre, liste);
-        }
-  }
+      Node<T> p = rot;
 
-  private static <T> String enGren(Node<T> p) {//hjelpemetode
-      Stakk<T> a = new TabellStakk<>();
+      while(!listeEmpty){
+          s = new StringJoiner(", ","[","]");
 
-      while (p != null) {
-            a.leggInn(p.verdi);
-            p = p.forelder;
+          while(p.venstre!=null || p.høyre!=null) {
+              if(p.venstre!=null) {
+                  if(p.høyre!=null) a.add(p.høyre);
+                  p = p.venstre;
+              }else {
+                  p = p.høyre;
+              }
+              //break;  // hvis jeg setter en break her, får jeg feilmelding i oppgave 7d så problemet ligger i deloppgave 7e , skjønner ikke hvorfor den bare står og kjører
+          }
+
+          while(p!=null) {
+              b.add(p);
+              p = p.forelder;
+          }
+
+          while(!b.isEmpty()){
+              s.add(b.pollLast().toString());
+          }
+
+          if(stringTabell[stringTabell.length-1]!=null)
+              stringTabell = Arrays.copyOf(stringTabell, stringTabell.length+1);
+          stringTabell[i++] = s.toString();
+
+          if(!a.isEmpty()) p = a.pollLast();
+          else listeEmpty = true;
       }
 
-      return a.toString();
+      return stringTabell;
   }
   
   public String bladnodeverdier()
