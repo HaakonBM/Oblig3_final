@@ -400,8 +400,28 @@ public class ObligSBinTre<T> implements Beholder<T>
   
   public String bladnodeverdier()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+    Node p = rot;
+    finnBladnode(p, sb);
+    sb.append("]");
+    return sb.toString();
+  }// slutt bladnodeverdier
+
+  private void finnBladnode(Node p, StringBuilder sb) {
+    if (p == null) {
+      return;
+    }
+    if(p.venstre == null && p.høyre == null){
+      if(!sb.toString().equals("[")){
+        sb.append(",").append(" ").append(p);
+      } else {
+        sb.append(p);
+      }
+    }
+    finnBladnode(p.venstre, sb);
+    finnBladnode(p.høyre, sb);
+  }// slutt finnBladnode
   
   public String postString()
   {
@@ -422,12 +442,15 @@ public class ObligSBinTre<T> implements Beholder<T>
     
     private BladnodeIterator()  // konstruktør
     {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+
     }
-    
+   
+
+
     @Override
     public boolean hasNext()
     {
+
       return p != null;  // Denne skal ikke endres!
     }
     
