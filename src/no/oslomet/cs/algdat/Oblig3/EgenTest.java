@@ -7,16 +7,31 @@ public class EgenTest {
     public static void main (String[] args) {
 
         //Oppgave 0 og 1
-        int [] a = {4,7,2,9,4,10,8,7,4,6,1};
-        ObligSBinTre<Integer> tre = new ObligSBinTre<>(Comparator. naturalOrder ());
-        for ( int verdi : a) tre.leggInn(verdi);
+        no.oslomet.cs.algdat.Oblig3.ObligSBinTre<Integer> tre =
+                new ObligSBinTre<>(Comparator.naturalOrder());
 
-        System. out .println(tre); // [1, 2, 4, 4, 4, 6, 7, 7, 8, 9, 10]
+        tre.leggInn(6);
+        System.out.println(tre.toString());
+        tre.fjern(6);
 
-        int [] b = {4,7,2,9,4,10,8,7,4,6,1};
-        ObligSBinTre<Integer> treEn = new ObligSBinTre<>(Comparator. naturalOrder ());
-        for ( int verdi : b) treEn.leggInn(verdi);
-        System. out .println(treEn.omvendtString());
+        System.out.println(tre.toString());
 
+        int[] a = {6, 3, 9, 1, 5, 7, 10, 2, 4, 8, 11, 6, 8};
+        for (int verdi : a) tre.leggInn(verdi);
+
+        System.out.println(tre.toString());
+        tre.fjern(11);
+        System.out.println(tre.toString());
+
+        String s;
+
+        tre.fjern(12);
+        System.out.println(tre.toString());
+        System.out.println("test");
+        tre.fjern(2);
+
+        System.out.println(tre.toString());
+        tre.fjernAlle(6);
+        System.out.println(tre.toString());
     }
 }
