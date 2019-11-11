@@ -390,17 +390,14 @@ public class ObligSBinTre<T> implements Beholder<T>
               }else {
                   p = p.høyre;
               }
-              break;  // hvis jeg setter en break her, får jeg feilmelding i oppgave 7d så problemet ligger i deloppgave 7e , skjønner ikke hvorfor den bare står og kjører
           }
 
           while(p!=null) {
               b.add(p);
               p = p.forelder;
-              break;
           }
           while(!b.isEmpty()){
               s.add(b.pollLast().toString());
-              break;
           }
 
           if(tabell[tabell.length-1]!=null)
