@@ -212,30 +212,33 @@ public class ObligSBinTre<T> implements Beholder<T>
   {
     return antall == 0;
   }
-  
+
   @Override
   public void nullstill() /////////// Opg 5
   {
-    Node<T> p = rot, q = null; // q er forelder til p
-
-    while ( rot != null) {
-      p = rot; q= null;
-      while (p.høyre != null || p.venstre != null) {
-        if(p.høyre != null && p.venstre != null){
-          p = p.venstre;
-        }
-        else if(p.høyre == null) {
-          p = p.venstre;
-        }
-        else if (p.venstre == null){
-          p = p.høyre;
-        }
+      if (!tom()) {
+          nullstill(rot);
       }
-      p.høyre = null;
-      p.venstre = null;
-      p.forelder = null;
+
+      rot = null;
+      antall = 0;
+      endringer++;
+  }
+
+  private static <T> void nullstill(Node<T> p)
+  {
+
+      if (p.venstre != null) {
+          nullstill(p.venstre);
+          p.venstre = null;
+      }
+
+      if (p.høyre != null) {
+          nullstill(p.høyre);
+          p.høyre = null;
+      }
+
       p.verdi = null;
-    }
   }
 
   // Hvis p.høyre ikke er null, finn den minste indeks nederst til venstre side av treet.
@@ -365,11 +368,13 @@ public class ObligSBinTre<T> implements Beholder<T>
       if(tom()){
           return new String[0];
       }
+
+      ArrayDeque<Node<T>> a = new ArrayDeque();
+      ArrayDeque<Node<T>> b = new ArrayDeque();
+
       int i =0;
       String[] tabell = new String[1];
       StringJoiner s;
-      ArrayDeque<Node<T>> a = new ArrayDeque();
-      ArrayDeque<Node<T>> b = new ArrayDeque();
 
       boolean listeEmpty = false;
 
@@ -385,15 +390,17 @@ public class ObligSBinTre<T> implements Beholder<T>
               }else {
                   p = p.høyre;
               }
-              //break;  // hvis jeg setter en break her, får jeg feilmelding i oppgave 7d så problemet ligger i deloppgave 7e , skjønner ikke hvorfor den bare står og kjører
+              break;  // hvis jeg setter en break her, får jeg feilmelding i oppgave 7d så problemet ligger i deloppgave 7e , skjønner ikke hvorfor den bare står og kjører
           }
 
           while(p!=null) {
               b.add(p);
               p = p.forelder;
+              break;
           }
           while(!b.isEmpty()){
               s.add(b.pollLast().toString());
+              break;
           }
 
           if(tabell[tabell.length-1]!=null)
