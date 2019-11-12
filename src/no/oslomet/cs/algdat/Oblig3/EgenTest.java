@@ -9,18 +9,13 @@ public class EgenTest {
     public static void main(String[] args) {
 
         //Oppgave 0 og 1
-        no.oslomet.cs.algdat.Oblig3.ObligSBinTre<Integer> tre =
+        no.oslomet.cs.algdat.Oblig3.ObligSBinTre<Character> tre =
                 new ObligSBinTre<>(Comparator.naturalOrder());
 
-        tre.leggInn(6);
-        System.out.println(tre.toString());
-        tre.fjern(6);
-
-        System.out.println(tre.toString());
-
-        int[] a = {6, 3, 9, 1, 5, 7, 10, 2, 4, 8, 11, 6, 8};
-        for (int verdi : a) tre.leggInn(verdi);
-
+        char [] verdier = "IATBHJCRSOFELKGDMPQN" .toCharArray();
+        for ( char c : verdier) tre.leggInn(c);
+        System. out .println(tre.høyreGren() + " " + tre.lengstGren());
+        for (Character c : tre) System. out .print(c + " " ); // D G K N Q S
 
 
     }

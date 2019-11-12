@@ -69,6 +69,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     p.forelder= q;
 
   antall++;
+  endringer++;
   return true;
 
   }
@@ -157,6 +158,7 @@ public class ObligSBinTre<T> implements Beholder<T>
               }
           }
       }
+      endringer++;
       antall--;
       return true;
   }
@@ -490,6 +492,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     private int iteratorendringer = endringer;
 
     // konstruktør
+
     private BladnodeIterator()  {
         if (tom()) return;
         // ved bruk av en hjelpemetode
@@ -498,7 +501,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         removeOK = false;
         iteratorendringer = endringer;
     }
-   
+
 
 
     @Override
@@ -508,7 +511,7 @@ public class ObligSBinTre<T> implements Beholder<T>
     }
 
     
-    @Override
+
     public T next() {
         if (!hasNext()) throw new NoSuchElementException("Ikke flere bladnodeverdier!");
 
@@ -522,7 +525,7 @@ public class ObligSBinTre<T> implements Beholder<T>
         return q.verdi;
 
     }
-    
+
     @Override
     public void remove() {
         if (!removeOK) throw
