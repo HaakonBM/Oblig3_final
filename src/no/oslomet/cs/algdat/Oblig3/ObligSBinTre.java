@@ -98,72 +98,67 @@ public class ObligSBinTre<T> implements Beholder<T>
           return false;
       }
 
-      Node<T> p = rot;
+      Node<T> p = rot, q = null;
+      while (p != null){
+          int a = comp.compare(verdi,p.verdi);
 
-      while (p != null) {
-          int compare = comp.compare(verdi, p.verdi); {
-              if (compare < 0) {
-                  p = p.venstre;
-              } else if (compare > 0) {
-                  p = p.høyre;
-              } else {
-                  break;
-              }
-          }
+          if (a < 0) { q = p; p = p.venstre; }
+
+          else if (a > 0) { q = p; p = p.høyre; }
+
+          else break;
       }
-      if (p==null) {
+      if (p == null) {
           return false;
       }
 
-      Node<T> b = rot;
-      if (p.høyre == null || p.venstre == null) {
-          if (p.venstre != null) {
-              b = p.venstre;
-          } else {
-              b = p.høyre;
-          }
-
+      if (p.venstre == null || p.høyre == null)
+      {
+          Node<T> b = p.venstre != null ? p.venstre : p.høyre;
           if (p == rot) {
               rot = b;
-              if (b != null) {
+              if(b != null)
                   b.forelder = null;
-              }
-          } else if (p == p.forelder.venstre) {
-              if (b!= null) {
-                  b.forelder = p.forelder;
-                  p.forelder.venstre = b;
-              }
-          } else {
-              if (b != null) {
-                  b.forelder = p.forelder;
-              }
-              p.forelder.høyre = b;
           }
-      } else {
+          else if (p == q.venstre) {
+              q.venstre = b;
 
-          Node<T> r = p.høyre;
-          while (r.venstre != null) {
-              r = r.venstre;
+              if(b != null)
+                  b.forelder = q;
           }
-          p.verdi = r.verdi;
+          else {
+              q.høyre = b;
 
-          if (r.forelder != p) {
-              Node<T> q = r.forelder;
-              q.venstre = r.høyre;
-              if (q.venstre != null) {
-                  q.venstre.forelder = q;
-              }
-          } else {
-              p.høyre = r.høyre;
-              if (p.høyre != null) {
-                  p.høyre.forelder = p;
-              }
+              if(b != null)
+                  b.forelder = q;
           }
       }
 
+      else
+      {
+          Node<T> b = p, c = p.høyre;
+          while (c.venstre != null) {
+              b = c;
+              c = c.venstre;
+          }
+
+          p.verdi = c.verdi;
+
+          if (b != p) {
+              b.venstre = c.høyre;
+              if(c.høyre != null) {
+                  c.høyre.forelder = b;
+              }
+          }
+          else {
+              b.høyre = c.høyre;
+              if(c.høyre != null){
+                  c.høyre.forelder = b;
+              }
+          }
+      }
       antall--;
       return true;
-
   }
 
   public int fjernAlle(T verdi) /////////////// Opg 5
